@@ -1,0 +1,65 @@
+﻿string source = "aaba";
+string pattern = "ba";
+int sourceLength = 4;
+int patternLength = 2;
+
+if (pattern == "")
+{
+    Print(0);
+}
+
+int[] prefixFunction = new int[sourceLength];
+int i;
+int lengthOfCurrentSample;
+
+for (i = 1; i < sourceLength; i = i + 1)
+{
+    lengthOfCurrentSample = prefixFunction[i - 1];
+                
+    while (source[i] != source[lengthOfCurrentSample])
+    {
+        if (lengthOfCurrentSample <= 0)
+        {
+            goto b;
+        }
+
+        lengthOfCurrentSample = prefixFunction[lengthOfCurrentSample - 1];
+    }
+
+    b:
+    if (source[i] == source[lengthOfCurrentSample])
+    {
+        lengthOfCurrentSample = lengthOfCurrentSample + 1;
+    }
+
+    prefixFunction[i] = lengthOfCurrentSample;
+}
+
+int curPatternPosition = 0;
+
+for (i = 0; i < sourceLength; i = i + 1)
+{
+    while (source[i] != pattern[curPatternPosition])
+    {
+        if (curPatternPosition <= 0)
+        {
+            goto c;
+        }
+        curPatternPosition = prefixFunction[curPatternPosition - 1];
+    }
+c:
+
+    if (pattern[curPatternPosition] == source[i])
+    {
+        curPatternPosition = curPatternPosition + 1;
+    }
+
+    if (curPatternPosition == patternLength)
+    {
+        Print(i - patternLength + 1);
+        goto a;
+    }
+}
+
+Print(-1);
+a: Print("");

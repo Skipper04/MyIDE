@@ -1,0 +1,28 @@
+﻿int fibNum = 10;
+int f1 = 1;
+int f2 = 1;
+int fibResult;
+if (fibNum < 1)
+{
+	fibResult = -1;
+}
+if (fibNum == 1)
+{
+	fibResult = f1;
+}
+else if (fibNum == 2)
+{
+	fibResult = f2;
+}
+else
+{
+	int temp;
+	for (int i = 3; i <= fibNum; i = i + 1)
+	{
+		f1 = f2 + f1;
+		temp = f1;
+		f1 = f2;
+		f2 = temp;
+	}
+	fibResult = f2;
+}
