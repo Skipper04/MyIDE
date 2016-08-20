@@ -51,13 +51,14 @@ namespace Interpreter
         private const char colon = ':';
 
         private readonly Dictionary<string, TokenType> keywordToTokenType =
-            new Dictionary<string, TokenType>()
+            new Dictionary<string, TokenType>
             {
                 {"if", TokenType.If},
                 {"while", TokenType.While},
                 {"for", TokenType.For},
                 {"goto", TokenType.Goto},
-                {"else", TokenType.Else}
+                {"else", TokenType.Else},
+                {"return", TokenType.Return}
             };
 
         #endregion

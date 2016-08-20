@@ -31,6 +31,7 @@
         For,                //"for"
         While,              //"while"
         Goto,               //"goto"
+        Return,             //"return"
         Semicolon,          //';'
         Eof                 //end of file
     }

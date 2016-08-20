@@ -61,9 +61,7 @@
     <Compile Include="Interfaces\IError.cs" />
     <Compile Include="Interfaces\IInterpreter.cs" />
     <Compile Include="Position.cs" />
-    <Compile Include="Program.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Token.cs" />
     <Compile Include="TokenType.cs" />
     <Compile Include="Values\Array.cs" />

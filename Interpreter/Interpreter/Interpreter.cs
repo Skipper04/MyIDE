@@ -14,18 +14,7 @@ namespace Interpreter
         private Statement nextStatement;
         private readonly Context context = new Context();
         private readonly string programText;
-        private IWriter writer;
-
-        public Interpreter(Ast.Program program, Context context)
-        {
-            if (program == null || context == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            this.program = program;
-            this.context = context;
-        }
+        private readonly IWriter writer;
 
         public Interpreter(string programText, IWriter writer)
         {

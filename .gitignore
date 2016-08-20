@@ -10,6 +10,9 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+#my files
+C:\Users\Андрей Каликин\Documents\Visual Studio 2013\Projects\Visual C#\Универ\MyIDE\Interpreter\*.txt
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

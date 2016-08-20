@@ -525,6 +525,14 @@ namespace InterpreterTests
         }
 
         [Test]
+        public void ReturnTokenTest()
+        {
+            const string input = "return a;";
+            lexer = new Lexer(input);
+            Assert.AreEqual(TokenType.Return, lexer.GetNextTokenForParser().Type);
+        }
+
+        [Test]
         public void PositionsMultilineTest()
         {
             const string input = @"double a = 5.5;

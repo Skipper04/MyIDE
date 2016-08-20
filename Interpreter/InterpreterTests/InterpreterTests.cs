@@ -17,24 +17,21 @@ using ValueType = Interpreter.ValueType;
 namespace InterpreterTests
 {
     [TestFixture]
-    class InterpreterTests
+    internal class InterpreterTests
     {
         private Context context;
         private string programText;
-        private Parser parser;
         private InterpreterObj interpreter;
-        private IWriter writer = new TestWriter();
+        private readonly IWriter writer = new TestWriter();
 
         #region Double tests
         [Test]
         public void DoubleTest1()
         {
-            context = new Context();
             programText = "double d = 5;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"d", new Interpreter.Values.Double(5)}
@@ -48,10 +45,9 @@ namespace InterpreterTests
         {
             context = new Context();
             programText = "double d = 5; double c = 8; double a = d + c;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"d", new Interpreter.Values.Double(5)},
@@ -67,10 +63,9 @@ namespace InterpreterTests
         {
             context = new Context();
             programText = @"double d = 5; d = 0;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"d", new Interpreter.Values.Double(0.0)},
@@ -85,10 +80,9 @@ namespace InterpreterTests
             context = new Context();
             programText = @"double d = 5; double c = 8; double a = d + c;double b = (a + d)*2; 
 c = 4; a = c+b;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"d", new Interpreter.Values.Double(5)},
@@ -136,10 +130,9 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "double d = 4/3;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"d", new Interpreter.Values.Double(1)},
@@ -153,10 +146,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "double d = 45*0.2;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"d", new Interpreter.Values.Double(9)},
@@ -170,10 +163,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "double d = ((5+6)*2+1)/3+45*0.2;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"d", new Interpreter.Values.Double(16)},
@@ -187,10 +180,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "double d = 2**2;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"d", new Interpreter.Values.Double(4)},
@@ -204,10 +197,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "double d = (0.2 + 0.4 - 0.001)**2.2;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"d", new Interpreter.Values.Double(0.323846351994)},
@@ -434,10 +427,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "int a = 5;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"a", new Int(5)},
@@ -451,10 +444,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "int a; a = 5;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"a", new Int(5)},
@@ -468,10 +461,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "int a = 5 + 7;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"a", new Int(12)},
@@ -485,10 +478,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "int a = 5 - 7;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"a", new Int(-2)},
@@ -502,10 +495,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "int a = 6 / 2;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"a", new Int(3)},
@@ -866,10 +859,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "if (1 < 2) double d = 5;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"d", new Interpreter.Values.Double(5)},
@@ -883,10 +876,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "if (1 < 2) {double d = 5; d = d + 0.5;}";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"d", new Interpreter.Values.Double(5.5)},
@@ -900,10 +893,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "int a = 5; int b = 2; if (a > b) {int c = a; a = b; b = c;}";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"a", new Int(2)},
@@ -919,10 +912,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "if (1 > 2) int c = 1; int c = 2;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"c", new Int(2)},
@@ -936,10 +929,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "int a = 5; int b = 2; if (a < b) {int c = a; a = b; b = c;} int c = a+b;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"a", new Int(5)},
@@ -955,10 +948,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "if (1 == 1) int c = 5;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"c", new Int(5)},
@@ -972,10 +965,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "if (2 < 1) {int c = 5;} else int c = 1;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"c", new Int(1)},
@@ -989,10 +982,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "if (2 < 1) {int c = 5;} else {int c = 1;}";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"c", new Int(1)},
@@ -1006,10 +999,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "if (2 < 1) {int c = 5;} else if (2 == 1) {int c = 1;}";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>();
 
             Assert.IsTrue(AreEqual(result, variableValues));
@@ -1031,10 +1024,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "if (2 < 1) {int c = 5;} else if (2 == 1) {int c = 1;} else int c = 10;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"c", new Int(10)},
@@ -1048,10 +1041,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "int a = 5; int b = 2; if (a < b) {int c = a; a = b; b = c;} else int c = a+b;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"a", new Int(5)},
@@ -1071,10 +1064,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "int a = 5;while(a > 0) a = a - 1;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"a", new Int(0)},
@@ -1088,10 +1081,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "int a = 5; int c = 1; while(a > 0) {a = a - 1; c = c + 1;}";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"a", new Int(0)},
@@ -1106,10 +1099,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "int a = 5; int c = 1; while(a > 0) {a = a - 1; c = c + 1;} a = 1; c = 1;";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"a", new Int(1)},
@@ -1124,10 +1117,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "int a = 5; while(a >= 0) a = a - 1; ";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"a", new Int(-1)},
@@ -1145,10 +1138,10 @@ c = 4; a = c+b;";
         {
             context = new Context();
             programText = "int c = 0; for (int i = 0; i < 5; i = i + 1) {c = i;}";
-            parser = new Parser(programText);
-            interpreter = new InterpreterObj(parser.Program(), context);
-            interpreter.Interpret();
-            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(context.VariableValues);
+            
+            interpreter = new InterpreterObj(programText, writer);
+            interpreter.Run();
+            SortedDictionary<string, Value> variableValues = new SortedDictionary<string, Value>(interpreter.GetVariables());
             SortedDictionary<string, Value> result = new SortedDictionary<string, Value>
             {
                 {"i", new Int(5)},
@@ -1430,32 +1423,39 @@ c = 4; a = c+b;";
                 InterpreterException.ExceptionType.AlreadyHasBeenDeclaredVariable));
         }
 
+        [Test]
+        public void FunctionMainTest()
+        {
+            programText = "void Main() {int a;}";
+
+        }
+
         private static bool AreEqual(SortedDictionary<string, Value> first, SortedDictionary<string, Value> second)
         {
             return first.Values.SequenceEqual(second.Values) &&
                    first.Keys.SequenceEqual(second.Keys);
         }
 
-        private bool IsOneInterpreterError(List<IError> errors, InterpreterException.ExceptionType exceptionType)
+        private static bool IsOneInterpreterError(List<IError> errors, InterpreterException.ExceptionType exceptionType)
         {
             return errors.Count == 1 && errors[0].GetMessage().Equals(
                 new InterpreterException(exceptionType, new Position()).GetMessage());
         }
 
-        private bool IsOneValueError(List<IError> errors, ValueException.ExceptionType exceptionType,
+        private static bool IsOneValueError(List<IError> errors, ValueException.ExceptionType exceptionType,
             params Interpreter.ValueType[] types)
         {
             return errors.Count == 1 && errors[0].GetMessage().Equals(
                 new ValueException(exceptionType, types).GetMessage());
         }
 
-        private bool IsOneParserError(List<IError> errors, ParserException.ExceptionType exceptionType)
+        private static bool IsOneParserError(List<IError> errors, ParserException.ExceptionType exceptionType)
         {
             return errors.Count == 1 && errors[0].GetMessage().Equals(
                 new ParserException(exceptionType, new Position()).GetMessage());
         }
 
-        private Array CreateArray(Value[] values)
+        private static Array CreateArray(Value[] values)
         {
             if (values.Length == 0)
             {
@@ -1470,5 +1470,5 @@ c = 4; a = c+b;";
 
             return result;
         }
-    }
+    }    
 }

@@ -25,7 +25,7 @@ namespace MyIDE
         public delegate void TextChangedDeligate(TextChangedEventArgs args);
         public new event TextChangedDeligate TextChanged;
         public delegate void UndoRedoDeligate();
-        public event EventHandler Undo;
+        public event UndoRedoDeligate Undo;
         public event UndoRedoDeligate Redo;
 
         private string textBeforeChanging;
@@ -263,10 +263,10 @@ namespace MyIDE
             switch (e.KeyData)
             {
                 case Keys.Control | Keys.Z:
-                    if (Undo != null)
-                    {
-                        Undo();
-                    }
+                    //if (Undo != null)
+                    //{
+                    //    Undo();
+                    //}
 
                     if (TextChanged != null)
                     {
